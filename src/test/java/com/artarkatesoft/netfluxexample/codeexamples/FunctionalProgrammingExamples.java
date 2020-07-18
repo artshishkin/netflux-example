@@ -1,5 +1,6 @@
-package com.artarkatesoft.netfluxexample;
+package com.artarkatesoft.netfluxexample.codeexamples;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -9,6 +10,7 @@ import java.util.function.Consumer;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class FunctionalProgrammingExamples {
+    private List<String> greetings;
 
     /* 4 properties of a function
      * 1. name
@@ -16,6 +18,11 @@ public class FunctionalProgrammingExamples {
      * 3. parameter list
      * 4. body
      */
+
+    @BeforeEach
+    void setUp() {
+        greetings = Arrays.asList("hi", "my", "name", "is", "art");
+    }
 
     @Test
     void functionWith4Things() {
@@ -48,7 +55,6 @@ public class FunctionalProgrammingExamples {
 
     @Test
     void listIteratorHighCeremony() {
-        List<String> greetings = Arrays.asList("hi", "my", "name", "is", "art");
         for (int i = 0; i < greetings.size(); i++) {
             String greeting = greetings.get(i);
             System.out.println(greeting);
@@ -58,7 +64,6 @@ public class FunctionalProgrammingExamples {
 
     @Test
     void listIteratorLessCeremonyExternalIter() {
-        List<String> greetings = Arrays.asList("hi", "my", "name", "is", "art");
         for (String greeting : greetings) {
             System.out.println(greeting);
         }
@@ -67,7 +72,6 @@ public class FunctionalProgrammingExamples {
 
     @Test
     void listIteratorInternalIterConsumer() {
-        List<String> greetings = Arrays.asList("hi", "my", "name", "is", "art");
         greetings.forEach(
                 new Consumer<String>() {
                     @Override
@@ -86,19 +90,16 @@ public class FunctionalProgrammingExamples {
 
     @Test
     void listIteratorInternalIterLamdbaMethodTypeInference() {
-        List<String> greetings = Arrays.asList("hi", "my", "name", "is", "art");
         greetings.forEach(s -> System.out.println(s));  //inferred by compiler
     }
 
     @Test
     void listIteratorInternalIterMethodReference() {
-        List<String> greetings = Arrays.asList("hi", "my", "name", "is", "art");
         greetings.forEach(System.out::println);
     }
 
     @Test
     void countWordsWith2CharactersImperative() {
-        List<String> greetings = Arrays.asList("hi", "my", "name", "is", "art");
         int count = 0;
         for (String greeting : greetings) {
             if (greeting.length() == 2) count++;
@@ -108,7 +109,6 @@ public class FunctionalProgrammingExamples {
 
     @Test
     void countWordsWith2CharactersDeclarative1() {
-        List<String> greetings = Arrays.asList("hi", "my", "name", "is", "art");
         long count = greetings
                 .stream()
                 .filter(word -> word.length() == 2)
@@ -118,7 +118,6 @@ public class FunctionalProgrammingExamples {
 
     @Test
     void countWordsWith2CharactersDeclarative2() {
-        List<String> greetings = Arrays.asList("hi", "my", "name", "is", "art");
         long count = greetings
                 .stream()
                 .map(String::length)

@@ -1,4 +1,4 @@
-package com.artarkatesoft.netfluxexample;
+package com.artarkatesoft.netfluxexample.codeexamples;
 
 import org.junit.jupiter.api.Test;
 
