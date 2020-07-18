@@ -4,6 +4,7 @@ import com.artarkatesoft.netfluxexample.domain.Movie;
 import com.artarkatesoft.netfluxexample.domain.MovieEvent;
 import com.artarkatesoft.netfluxexample.repositories.MovieRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -13,6 +14,7 @@ import java.util.Date;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class MovieServiceImpl implements MovieService {
 
     private final MovieRepository repository;
@@ -20,7 +22,9 @@ public class MovieServiceImpl implements MovieService {
     @Override
     public Flux<MovieEvent> events(String movieId) {
         return Flux.<MovieEvent>generate(movieEventSynchronousSink -> {
-            movieEventSynchronousSink.next(new MovieEvent(movieId, new Date()));
+            MovieEvent movieEvent = new MovieEvent(movieId, new Date());
+            movieEventSynchronousSink.next(movieEvent);
+            log.debug("Streaming {}",movieEvent);
         }).delayElements(Duration.ofSeconds(1));
 
     }
