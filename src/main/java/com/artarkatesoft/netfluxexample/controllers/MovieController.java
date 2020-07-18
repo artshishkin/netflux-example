@@ -4,6 +4,7 @@ import com.artarkatesoft.netfluxexample.domain.Movie;
 import com.artarkatesoft.netfluxexample.domain.MovieEvent;
 import com.artarkatesoft.netfluxexample.service.MovieService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +19,7 @@ public class MovieController {
 
     private final MovieService movieService;
 
-    @GetMapping("{id}/events")
+    @GetMapping(value = "{id}/events", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     Flux<MovieEvent> streamMovieEvents(@PathVariable("id") String id) {
         return movieService.events(id);
     }
