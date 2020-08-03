@@ -1,12 +1,16 @@
 package com.artarkatesoft.netfluxexample.codeexamples;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
+import reactor.test.StepVerifier;
 
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -133,5 +137,35 @@ public class ReactiveStreamsExamples {
         greetings
                 .reduce((a, b) -> a + " - " + b)
                 .subscribe(System.out::println);
+    }
+
+    @Test
+    @DisplayName("prints NOTHING")
+    void testDelay() {
+        greetings
+                .delayElements(Duration.ofMillis(200))
+                .subscribe(System.out::println);
+    }
+
+    @Test
+    @DisplayName("prints everything using CountDownLatch")
+    void testDelay_countDownLatch() throws InterruptedException {
+        CountDownLatch latch = new CountDownLatch(1);
+        greetings
+                .delayElements(Duration.ofMillis(200))
+                .subscribe(System.out::println, null, latch::countDown);
+        latch.await();
+    }
+    @Test
+    @DisplayName("prints everything using StepVerifier")
+    void testDelay_stepVerifier() {
+
+        StepVerifier.create(greetings.delayElements(Duration.ofMillis(200)))
+                .expectSubscription()
+                .thenConsumeWhile(
+                        mess->true,
+                        System.out::println
+                )
+                .verifyComplete();
     }
 }
